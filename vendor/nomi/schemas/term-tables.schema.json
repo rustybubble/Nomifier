@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "term-tables.schema.json",
+  "title": "TermTables",
+  "description": "The scoring model exported as lookup tables. The phone adds up matching term points for a product and profile, applies hard stops, and computes score = base_score - points (NOMI-051, NOMI-060).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "model_version",
+    "rubric_version",
+    "base_score",
+    "tier_bands",
+    "combine",
+    "terms",
+    "hard_stops",
+    "citations"
+  ],
+  "properties": {
+    "model_version": {
+      "description": "Version of the exported model, e.g. 'rubric-v0.1'.",
+      "type": "string",
+      "minLength": 1
+    },
+    "rubric_version": {
+      "description": "Version of docs/rubric this export implements, e.g. 'v0'.",
+      "type": "string",
+      "minLength": 1
+    },
+    "base_score": {
+      "description": "Score before any points are taken off. Normally 100.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "tier_bands": { "$ref": "#/$defs/tier_bands" },
+    "combine": { "$ref": "#/$defs/combine" },
+    "terms": {
+      "description": "Points per ingredient, dimension and persona, plus extra points for conditions and medication types.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/term" }
+    },
+    "hard_stops": {
+      "description": "Rules that make a product red regardless of points.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/hard_stop" }
+    },
+    "citations": { "$ref": "common.schema.json#/$defs/citation_map" },
+    "provenance": { "$ref": "common.schema.json#/$defs/provenance" }
+  },
+  "$defs": {
+    "tier_bands": {
+      "title": "TierBands",
+      "description": "Score thresholds for each tier. Below yellow_min is red.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["green_min", "yellow_min"],
+      "properties": {
+        "green_min": {
+          "description": "Lowest score shown as green, e.g. 75.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "yellow_min": {
+          "description": "Lowest score shown as yellow, e.g. 50.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "combine": {
+      "title": "Combine",
+      "description": "How points from several ingredients in one product combine within a dimension.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method"],
+      "properties": {
+        "method": {
+          "description": "'max' takes the largest ingredient's points; 'max_plus_stacking' adds stacking_points for each extra ingredient that scores on the same dimension; 'sum' adds all.",
+          "type": "string",
+          "enum": ["max", "max_plus_stacking", "sum"]
+        },
+        "stacking_points": {
+          "description": "Extra points per additional ingredient on the same dimension, for max_plus_stacking.",
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "term": {
+      "title": "Term",
+      "description": "Points taken off for one ingredient on one dimension for one persona. A row with a condition or medication_type applies only when the profile has it, on top of the base row.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unii", "dimension", "persona", "points", "citation_ids"],
+      "properties": {
+        "unii": { "$ref": "common.schema.json#/$defs/unii" },
+        "dimension": { "$ref": "common.schema.json#/$defs/dimension" },
+        "persona": { "$ref": "common.schema.json#/$defs/persona" },
+        "condition": { "$ref": "common.schema.json#/$defs/condition" },
+        "medication_type": { "$ref": "common.schema.json#/$defs/medication_type" },
+        "points": {
+          "description": "Points taken off. Rows with 0 points are not exported.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "citation_ids": {
+          "description": "Keys into the citations map.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "common.schema.json#/$defs/citation_id" }
+        }
+      },
+      "not": { "required": ["condition", "medication_type"] }
+    },
+    "hard_stop": {
+      "title": "HardStop",
+      "description": "A rule that forces the result tier. Targets either an ingredient (every product containing it) or one product (for label rules like age limits that differ between products with the same ingredient). Matches when the profile matches every given field.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "result", "message_template_id", "citation_ids"],
+      "properties": {
+        "id": {
+          "description": "Stable rule id, e.g. 'hs_salicylate_children'.",
+          "type": "string",
+          "pattern": "^hs_[a-z0-9_]+$"
+        },
+        "unii": { "$ref": "common.schema.json#/$defs/unii" },
+        "ndc11": { "$ref": "common.schema.json#/$defs/ndc11" },
+        "personas": {
+          "description": "Personas the rule applies to. Omit to apply to all.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "common.schema.json#/$defs/persona" },
+          "uniqueItems": true
+        },
+        "condition": { "$ref": "common.schema.json#/$defs/condition" },
+        "medication_type": { "$ref": "common.schema.json#/$defs/medication_type" },
+        "result": {
+          "description": "Tier forced when the rule matches.",
+          "type": "string",
+          "enum": ["red"]
+        },
+        "message_template_id": {
+          "description": "Explanation template shown when the rule fires.",
+          "type": "string",
+          "minLength": 1
+        },
+        "citation_ids": {
+          "description": "Keys into the citations map.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "common.schema.json#/$defs/citation_id" }
+        }
+      },
+      "allOf": [
+        { "not": { "required": ["condition", "medication_type"] } },
+        { "not": { "required": ["unii", "ndc11"] } },
+        { "if": { "not": { "required": ["unii"] } }, "then": { "required": ["ndc11"] } }
+      ]
+    }
+  }
+}

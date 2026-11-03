@@ -1,0 +1,14 @@
+.env
+data/catalog/**/*.jpg
+media/*
+!media/.gitkeep
+*.npz
+data/nomifier.db
+.cache/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+web/dist/
+bench_out/

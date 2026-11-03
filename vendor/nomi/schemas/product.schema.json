@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product.schema.json",
+  "title": "Product",
+  "description": "One OTC product package, identified by its NDC. Produced by the identity stage (NOMI-025, NOMI-026); read by scoring and the app.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ndc11",
+    "spl_set_id",
+    "spl_version",
+    "brand_name",
+    "generic_name",
+    "marketing_category",
+    "otc_category",
+    "uses",
+    "scope",
+    "ingredients"
+  ],
+  "properties": {
+    "ndc11": { "$ref": "common.schema.json#/$defs/ndc11" },
+    "spl_set_id": {
+      "description": "DailyMed label set id, stable across label versions.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "spl_version": {
+      "description": "DailyMed label version number.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "brand_name": {
+      "description": "Name on the box, e.g. 'Tylenol Extra Strength'.",
+      "type": "string",
+      "minLength": 1
+    },
+    "generic_name": {
+      "description": "Generic name of the active ingredients, e.g. 'acetaminophen'.",
+      "type": "string",
+      "minLength": 1
+    },
+    "labeler": {
+      "description": "Company that markets the product.",
+      "type": "string"
+    },
+    "dosage_form": {
+      "description": "Dosage form from the NDC directory, e.g. 'TABLET, COATED'.",
+      "type": "string"
+    },
+    "marketing_category": {
+      "description": "How the product is legally sold, from the NDC directory.",
+      "type": "string",
+      "enum": [
+        "otc_monograph_drug",
+        "otc_monograph_final",
+        "otc_monograph_not_final",
+        "nda",
+        "nda_authorized_generic",
+        "anda",
+        "bla",
+        "unapproved_homeopathic",
+        "unapproved_drug_other",
+        "other"
+      ]
+    },
+    "otc_category": {
+      "description": "Our OTC grouping, e.g. 'internal_analgesics' or 'antacids' (values assigned in NOMI-026). Null for out-of-scope products.",
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "uses": {
+      "description": "Consumer uses from the label, e.g. ['pain', 'fever'] (taxonomy in NOMI-047).",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+      "uniqueItems": true
+    },
+    "scope": {
+      "description": "Whether Nomi scores this product. Homeopathic products are shown but not scored.",
+      "type": "string",
+      "enum": ["in_scope", "homeopathic", "out_of_scope"]
+    },
+    "ingredients": {
+      "description": "Active ingredients with strengths.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/active_ingredient" }
+    },
+    "inactive_ingredients": {
+      "description": "Inactive ingredients, used for allergen and excipient checks.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/inactive_ingredient" }
+    },
+    "review_status": { "$ref": "common.schema.json#/$defs/review_status" }
+  },
+  "if": { "properties": { "scope": { "const": "in_scope" } }, "required": ["scope"] },
+  "then": { "properties": { "otc_category": { "type": "string" } } },
+  "$defs": {
+    "active_ingredient": {
+      "title": "ActiveIngredient",
+      "description": "One active ingredient and its strength, e.g. 500 mg, or 650 mg per 30 mL for liquids.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unii", "name", "strength", "unit"],
+      "properties": {
+        "unii": { "$ref": "common.schema.json#/$defs/unii" },
+        "name": {
+          "description": "Ingredient name as on the label, e.g. 'acetaminophen'.",
+          "type": "string",
+          "minLength": 1
+        },
+        "strength": {
+          "description": "Amount of the ingredient, e.g. 500.",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "description": "Unit of strength, e.g. 'mg'.",
+          "type": "string",
+          "minLength": 1
+        },
+        "per_amount": {
+          "description": "For liquids and similar forms: the amount the strength is per, e.g. 30.",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "per_unit": {
+          "description": "Unit of per_amount, e.g. 'mL'.",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "dependentRequired": {
+        "per_amount": ["per_unit"],
+        "per_unit": ["per_amount"]
+      }
+    },
+    "inactive_ingredient": {
+      "title": "InactiveIngredient",
+      "description": "One inactive ingredient. UNII may be missing on some labels.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "unii": { "$ref": "common.schema.json#/$defs/unii" },
+        "name": {
+          "description": "Ingredient name as on the label, e.g. 'FD&C red no. 40'.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

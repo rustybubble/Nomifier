@@ -1,0 +1,80 @@
+{
+  "model_version": "rubric-v0.1",
+  "rubric_version": "v0",
+  "base_score": 100,
+  "tier_bands": {
+    "green_min": 75,
+    "yellow_min": 50
+  },
+  "combine": {
+    "method": "max_plus_stacking",
+    "stacking_points": 5
+  },
+  "terms": [
+    {
+      "unii": "362O9ITL9D",
+      "dimension": "liver",
+      "persona": "adult_18_64",
+      "points": 10,
+      "citation_ids": [
+        "cit_acetaminophen_liver_warning"
+      ]
+    },
+    {
+      "unii": "362O9ITL9D",
+      "dimension": "liver",
+      "persona": "adult_18_64",
+      "condition": "liver_disease",
+      "points": 15,
+      "citation_ids": [
+        "cit_acetaminophen_liver_warning"
+      ]
+    }
+  ],
+  "hard_stops": [
+    {
+      "id": "hs_acetaminophen_under_2",
+      "unii": "362O9ITL9D",
+      "personas": [
+        "under_2"
+      ],
+      "result": "red",
+      "message_template_id": "hard_stop_label_age_limit",
+      "citation_ids": [
+        "cit_acetaminophen_directions"
+      ]
+    },
+    {
+      "id": "hs_adult_acetaminophen_children",
+      "ndc11": "99999000101",
+      "personas": [
+        "child_6_11",
+        "child_2_5"
+      ],
+      "result": "red",
+      "message_template_id": "hard_stop_label_age_limit",
+      "citation_ids": [
+        "cit_acetaminophen_directions"
+      ]
+    }
+  ],
+  "citations": {
+    "cit_acetaminophen_liver_warning": {
+      "source": "fda_label",
+      "document_id": "3f1c2a9e-1111-4c2d-9a7b-000000000001",
+      "section": "Warnings"
+    },
+    "cit_acetaminophen_directions": {
+      "source": "fda_label",
+      "document_id": "3f1c2a9e-1111-4c2d-9a7b-000000000001",
+      "section": "Directions"
+    }
+  },
+  "provenance": {
+    "schema_version": "0.1.0",
+    "dataset_version": "2026.11.0",
+    "rubric_version": "rubric-v0.1",
+    "code_commit": "abc1234",
+    "generated_at": "2026-11-06T12:00:00Z"
+  }
+}
