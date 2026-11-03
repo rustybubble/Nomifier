@@ -1,0 +1,292 @@
+[
+  {
+    "description": "4-4-2 NDC 1234-5678-90 (synthetic)",
+    "input": "312345678906",
+    "status": "ok",
+    "candidates": [
+      "01234567890",
+      "12345067890",
+      "12345678900"
+    ]
+  },
+  {
+    "description": "4-4-2 NDC 0045-0449-01 (synthetic)",
+    "input": "300450449016",
+    "status": "ok",
+    "candidates": [
+      "00045044901",
+      "00450044901",
+      "00450449001"
+    ]
+  },
+  {
+    "description": "4-4-2 NDC 9999-0001-10 (synthetic)",
+    "input": "399990001105",
+    "status": "ok",
+    "candidates": [
+      "09999000110",
+      "99990000110",
+      "99990001100"
+    ]
+  },
+  {
+    "description": "5-3-2 NDC 50580-449-02 (Tylenol, from docs/nomi-101.md)",
+    "input": "350580449028",
+    "status": "ok",
+    "candidates": [
+      "05058044902",
+      "50580044902",
+      "50580449002"
+    ]
+  },
+  {
+    "description": "5-3-2 NDC 11673-010-31 (synthetic)",
+    "input": "311673010310",
+    "status": "ok",
+    "candidates": [
+      "01167301031",
+      "11673001031",
+      "11673010301"
+    ]
+  },
+  {
+    "description": "5-3-2 NDC 00000-000-00, all zeros (synthetic)",
+    "input": "300000000001",
+    "status": "ok",
+    "candidates": [
+      "00000000000",
+      "00000000000",
+      "00000000000"
+    ]
+  },
+  {
+    "description": "5-4-1 NDC 12345-6789-0 (synthetic)",
+    "input": "312345678906",
+    "status": "ok",
+    "candidates": [
+      "01234567890",
+      "12345067890",
+      "12345678900"
+    ]
+  },
+  {
+    "description": "5-4-1 NDC 68016-0000-4, check digit 0 (synthetic)",
+    "input": "368016000040",
+    "status": "ok",
+    "candidates": [
+      "06801600004",
+      "68016000004",
+      "68016000004"
+    ]
+  },
+  {
+    "description": "EAN-13 form of the Tylenol barcode",
+    "input": "0350580449028",
+    "status": "ok",
+    "candidates": [
+      "05058044902",
+      "50580044902",
+      "50580449002"
+    ]
+  },
+  {
+    "description": "EAN-13 form of a 5-4-1 barcode",
+    "input": "0312345678906",
+    "status": "ok",
+    "candidates": [
+      "01234567890",
+      "12345067890",
+      "12345678900"
+    ]
+  },
+  {
+    "description": "Leading and trailing spaces",
+    "input": "  350580449028 ",
+    "status": "ok",
+    "candidates": [
+      "05058044902",
+      "50580044902",
+      "50580449002"
+    ]
+  },
+  {
+    "description": "Trailing newline",
+    "input": "350580449028\n",
+    "status": "ok",
+    "candidates": [
+      "05058044902",
+      "50580044902",
+      "50580449002"
+    ]
+  },
+  {
+    "description": "Leading tab",
+    "input": "\t312345678906",
+    "status": "ok",
+    "candidates": [
+      "01234567890",
+      "12345067890",
+      "12345678900"
+    ]
+  },
+  {
+    "description": "Check digit 7 instead of 8",
+    "input": "350580449027",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "Check digit 9 instead of 8",
+    "input": "350580449029",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "Check digit computed with the 12th digit included (should be 6)",
+    "input": "300450449014",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "Check digit 1 where 0 is expected",
+    "input": "368016000041",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "EAN-13 with a wrong check digit",
+    "input": "0350580449020",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "Two neighbouring digits swapped (8 and 0)",
+    "input": "350508449028",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "Starts with 1 and bad check digit: misread wins over non-drug",
+    "input": "150580449028",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "Valid UPC-A starting with 0 (not a drug)",
+    "input": "012345678905",
+    "status": "not_ndc_barcode",
+    "candidates": []
+  },
+  {
+    "description": "Valid UPC-A starting with 0, common food barcode",
+    "input": "036000291452",
+    "status": "not_ndc_barcode",
+    "candidates": []
+  },
+  {
+    "description": "Valid UPC-A starting with 4",
+    "input": "412345678903",
+    "status": "not_ndc_barcode",
+    "candidates": []
+  },
+  {
+    "description": "EAN-13 of a non-drug UPC-A",
+    "input": "0012345678905",
+    "status": "not_ndc_barcode",
+    "candidates": []
+  },
+  {
+    "description": "Empty string",
+    "input": "",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "Only spaces",
+    "input": "   ",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "Too short",
+    "input": "123",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "11 digits",
+    "input": "35058044902",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "14 digits",
+    "input": "35058044902800",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "13 digits not starting with 0 (non-drug EAN-13)",
+    "input": "1350580449028",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "Letter O instead of zero",
+    "input": "35058O449028",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "Dashes",
+    "input": "3-50580-449-02-8",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "Space in the middle",
+    "input": "350580 449028",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "Plus sign",
+    "input": "+35058044902",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "Arabic-Indic digit",
+    "input": "٣50580449028",
+    "status": "invalid_format",
+    "candidates": []
+  },
+  {
+    "description": "BOM before a valid drug barcode",
+    "input": "﻿350580449028",
+    "status": "ok",
+    "candidates": [
+      "05058044902",
+      "50580044902",
+      "50580449002"
+    ]
+  },
+  {
+    "description": "Valid non-drug EAN-13 (4006381333931)",
+    "input": "4006381333931",
+    "status": "not_ndc_barcode",
+    "candidates": []
+  },
+  {
+    "description": "Non-drug EAN-13 with bad check digit",
+    "input": "4006381333932",
+    "status": "bad_check_digit",
+    "candidates": []
+  },
+  {
+    "description": "Unit separator control character is not trimmed",
+    "input": "\u001f350580449028",
+    "status": "invalid_format",
+    "candidates": []
+  }
+]

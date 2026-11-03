@@ -1,0 +1,55 @@
+{
+  "ndc11": "99999000101",
+  "profile": {
+    "persona": "adult_65_plus",
+    "conditions": [
+      "hypertension"
+    ],
+    "medication_types": []
+  },
+  "score": 88,
+  "tier": "green",
+  "contributions": [
+    {
+      "dimension": "liver",
+      "points": 12,
+      "ingredient_uniis": [
+        "362O9ITL9D"
+      ],
+      "citations": [
+        {
+          "source": "fda_label",
+          "document_id": "3f1c2a9e-1111-4c2d-9a7b-000000000001",
+          "section": "Warnings"
+        }
+      ]
+    }
+  ],
+  "hard_stops_triggered": [],
+  "benchmark": {
+    "use": "pain",
+    "percentile": 82
+  },
+  "alternatives": [],
+  "explanation": [
+    {
+      "template_id": "liver_moderate",
+      "text": "Contains acetaminophen. Taking more than the label says can cause severe liver damage.",
+      "citations": [
+        {
+          "source": "fda_label",
+          "document_id": "3f1c2a9e-1111-4c2d-9a7b-000000000001",
+          "section": "Warnings"
+        }
+      ]
+    }
+  ],
+  "review_status": "preliminary",
+  "provenance": {
+    "schema_version": "0.1.0",
+    "dataset_version": "2026.11.0",
+    "rubric_version": "rubric-v0.1",
+    "code_commit": "abc1234",
+    "generated_at": "2026-11-06T12:00:00Z"
+  }
+}

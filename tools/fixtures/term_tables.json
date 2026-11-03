@@ -1,0 +1,224 @@
+{
+  "model_version": "dev-fixture",
+  "rubric_version": "dev-fixture",
+  "base_score": 100,
+  "tier_bands": { "green_min": 75, "yellow_min": 50 },
+  "combine": { "method": "max_plus_stacking", "stacking_points": 5 },
+  "terms": [
+    {
+      "unii": "362O9ITL9D",
+      "dimension": "liver",
+      "persona": "adult_18_64",
+      "points": 8,
+      "citation_ids": ["cit_dev_apap_liver"]
+    },
+    {
+      "unii": "362O9ITL9D",
+      "dimension": "liver",
+      "persona": "adult_65_plus",
+      "points": 8,
+      "citation_ids": ["cit_dev_apap_liver"]
+    },
+
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "gi_bleeding",
+      "persona": "adult_18_64",
+      "points": 8,
+      "citation_ids": ["cit_dev_ibu_gi"]
+    },
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "gi_bleeding",
+      "persona": "adult_65_plus",
+      "points": 40,
+      "citation_ids": ["cit_dev_ibu_gi"]
+    },
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "cardiovascular_bp",
+      "persona": "adult_18_64",
+      "condition": "hypertension",
+      "points": 20,
+      "citation_ids": ["cit_dev_ibu_ask"]
+    },
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "cardiovascular_bp",
+      "persona": "adult_65_plus",
+      "condition": "hypertension",
+      "points": 20,
+      "citation_ids": ["cit_dev_ibu_ask"]
+    },
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "kidney",
+      "persona": "adult_65_plus",
+      "points": 20,
+      "citation_ids": ["cit_dev_ibu_ask"]
+    },
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "kidney",
+      "persona": "adult_18_64",
+      "condition": "kidney_disease",
+      "points": 40,
+      "citation_ids": ["cit_dev_ibu_ask"]
+    },
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "kidney",
+      "persona": "adult_65_plus",
+      "condition": "kidney_disease",
+      "points": 40,
+      "citation_ids": ["cit_dev_ibu_ask"]
+    },
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "anticoagulant_bleeding",
+      "persona": "adult_18_64",
+      "medication_type": "anticoagulants",
+      "points": 40,
+      "citation_ids": ["cit_dev_ibu_gi"]
+    },
+    {
+      "unii": "DEVIBUPROF",
+      "dimension": "anticoagulant_bleeding",
+      "persona": "adult_65_plus",
+      "medication_type": "anticoagulants",
+      "points": 40,
+      "citation_ids": ["cit_dev_ibu_gi"]
+    },
+
+    {
+      "unii": "DEVDIPHENH",
+      "dimension": "sedation_falls",
+      "persona": "adult_18_64",
+      "points": 8,
+      "citation_ids": ["cit_dev_dph_when_using"]
+    },
+    {
+      "unii": "DEVDIPHENH",
+      "dimension": "sedation_falls",
+      "persona": "adult_65_plus",
+      "points": 20,
+      "citation_ids": ["cit_dev_dph_when_using"]
+    },
+    {
+      "unii": "DEVDIPHENH",
+      "dimension": "anticholinergic_cognitive",
+      "persona": "adult_65_plus",
+      "points": 40,
+      "citation_ids": ["cit_dev_acb"]
+    },
+    {
+      "unii": "DEVDIPHENH",
+      "dimension": "anticholinergic_cognitive",
+      "persona": "adult_18_64",
+      "condition": "glaucoma",
+      "points": 20,
+      "citation_ids": ["cit_dev_dph_ask"]
+    },
+    {
+      "unii": "DEVDIPHENH",
+      "dimension": "anticholinergic_cognitive",
+      "persona": "adult_18_64",
+      "condition": "enlarged_prostate",
+      "points": 20,
+      "citation_ids": ["cit_dev_dph_ask"]
+    },
+
+    {
+      "unii": "DEVPHENYLE",
+      "dimension": "cardiovascular_bp",
+      "persona": "adult_18_64",
+      "condition": "hypertension",
+      "points": 20,
+      "citation_ids": ["cit_dev_pe_ask"]
+    },
+    {
+      "unii": "DEVPHENYLE",
+      "dimension": "cardiovascular_bp",
+      "persona": "adult_65_plus",
+      "condition": "hypertension",
+      "points": 20,
+      "citation_ids": ["cit_dev_pe_ask"]
+    },
+    {
+      "unii": "DEVPHENYLE",
+      "dimension": "efficacy_evidence",
+      "persona": "adult_18_64",
+      "points": 8,
+      "citation_ids": ["cit_dev_pe_efficacy"]
+    },
+    {
+      "unii": "DEVPHENYLE",
+      "dimension": "efficacy_evidence",
+      "persona": "adult_65_plus",
+      "points": 8,
+      "citation_ids": ["cit_dev_pe_efficacy"]
+    }
+  ],
+  "hard_stops": [
+    {
+      "id": "hs_dev_first_gen_antihistamine_65_plus",
+      "unii": "DEVDIPHENH",
+      "personas": ["adult_65_plus"],
+      "result": "red",
+      "message_template_id": "hard_stop_stopp_avoid",
+      "citation_ids": ["cit_dev_stopp"]
+    }
+  ],
+  "citations": {
+    "cit_dev_apap_liver": {
+      "source": "fda_label",
+      "document_id": "DEV-FIXTURE",
+      "section": "Warnings",
+      "quote": "DEV FIXTURE: liver warning"
+    },
+    "cit_dev_ibu_gi": {
+      "source": "fda_label",
+      "document_id": "DEV-FIXTURE",
+      "section": "Warnings",
+      "quote": "DEV FIXTURE: stomach bleeding warning"
+    },
+    "cit_dev_ibu_ask": {
+      "source": "fda_label",
+      "document_id": "DEV-FIXTURE",
+      "section": "Ask a doctor before use",
+      "quote": "DEV FIXTURE: ask a doctor"
+    },
+    "cit_dev_dph_when_using": {
+      "source": "fda_label",
+      "document_id": "DEV-FIXTURE",
+      "section": "When using this product",
+      "quote": "DEV FIXTURE: drowsiness"
+    },
+    "cit_dev_dph_ask": {
+      "source": "fda_label",
+      "document_id": "DEV-FIXTURE",
+      "section": "Ask a doctor before use",
+      "quote": "DEV FIXTURE: glaucoma / prostate"
+    },
+    "cit_dev_acb": {
+      "source": "acb",
+      "document_id": "DEV-FIXTURE",
+      "section": "ACB score"
+    },
+    "cit_dev_stopp": {
+      "source": "stopp_start",
+      "document_id": "DEV-FIXTURE",
+      "section": "Avoid"
+    },
+    "cit_dev_pe_ask": {
+      "source": "fda_label",
+      "document_id": "DEV-FIXTURE",
+      "section": "Ask a doctor before use",
+      "quote": "DEV FIXTURE: high blood pressure"
+    },
+    "cit_dev_pe_efficacy": {
+      "source": "publication",
+      "document_id": "DEV-FIXTURE"
+    }
+  }
+}

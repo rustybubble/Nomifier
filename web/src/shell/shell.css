@@ -1,0 +1,363 @@
+/* Safe areas: --sat/--sab are set by IPhoneFrame; on a real phone env() applies. */
+.app {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+.app-main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.app-main > * {
+  position: absolute;
+  inset: 0;
+}
+.scan-pane {
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* ---------- Tab bar ---------- */
+.tabbar {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: var(--sab, env(safe-area-inset-bottom));
+  background: var(--chrome);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-top: 0.5px solid var(--separator);
+  z-index: 10;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: var(--tabbar-h);
+  color: var(--gray);
+  font-size: 10px;
+  font-weight: 500;
+}
+.tab svg {
+  width: 26px;
+  height: 26px;
+}
+.tab[aria-selected="true"] {
+  color: var(--tint);
+}
+
+/* ---------- Page ---------- */
+.page {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+.page-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding-top: var(--sat, env(safe-area-inset-top));
+  background: var(--chrome);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid transparent;
+  transition: border-color 0.2s;
+}
+.page-nav.collapsed {
+  border-bottom-color: var(--separator);
+}
+.page-nav h2 {
+  margin: 0;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.page-nav.collapsed h2 {
+  opacity: 1;
+}
+.page-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: calc(var(--sat, env(safe-area-inset-top)) + 44px) 16px 24px;
+}
+.page-title {
+  margin: 0 0 12px;
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 700;
+  letter-spacing: 0.37px;
+}
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 25vh;
+  color: var(--label2);
+  text-align: center;
+}
+.empty svg {
+  width: 56px;
+  height: 56px;
+}
+.empty b {
+  color: var(--label);
+  font-size: 20px;
+}
+
+/* ---------- Pill ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  min-height: 22px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  background: var(--fill);
+  color: var(--label2);
+}
+.pill-green {
+  background: var(--tier-green);
+  color: #fff;
+}
+.pill-orange {
+  background: var(--tier-orange);
+  color: #fff;
+}
+.pill-red {
+  background: var(--tier-red);
+  color: #fff;
+}
+.pill-gray {
+  background: var(--gray);
+  color: #fff;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: absolute;
+  top: calc(var(--sat, env(safe-area-inset-top)) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 32px);
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--bg2);
+  color: var(--label);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  font-weight: 500;
+  z-index: 100;
+  animation: toast-in 0.35s cubic-bezier(0.2, 1.2, 0.4, 1);
+}
+@keyframes toast-in {
+  from {
+    transform: translate(-50%, -140%);
+    opacity: 0;
+  }
+}
+
+/* ---------- Sheet ---------- */
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.sheet-backdrop.shown {
+  opacity: 1;
+}
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 51;
+  height: calc(100% - var(--sat, env(safe-area-inset-top)) - 8px);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg2);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.45s cubic-bezier(0.32, 1.1, 0.4, 1);
+  outline: none;
+}
+.sheet.dragging {
+  transition: none;
+}
+.sheet-head {
+  touch-action: none;
+  padding-bottom: 4px;
+}
+.sheet-grabber {
+  width: 36px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--separator);
+  margin: 6px auto 0;
+}
+.sheet-grab-hit {
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+.sheet-title {
+  margin: 0;
+  padding: 0 16px;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+}
+.sheet-body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 16px calc(var(--sab, env(safe-area-inset-bottom)) + 16px);
+}
+
+/* ---------- Banners / cards ---------- */
+.banner {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  z-index: 90;
+  bottom: calc(var(--tabbar-h) + var(--sab, env(safe-area-inset-bottom)) + 8px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 10px 16px;
+  border-radius: 14px;
+  background: var(--bg2);
+  color: var(--label);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+.banner span {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+}
+.btn-tint {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--tint);
+  color: #fff;
+  font-weight: 600;
+}
+.btn-plain {
+  color: var(--tint);
+  font-weight: 600;
+  padding: 0 12px;
+}
+.a2hs {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 16px;
+}
+.a2hs h3 {
+  margin: 0;
+  font-size: 17px;
+}
+.a2hs ol {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--label2);
+}
+.a2hs ol svg {
+  width: 18px;
+  height: 18px;
+  vertical-align: -3px;
+  color: var(--tint);
+}
+.a2hs .btn-plain {
+  align-self: flex-end;
+}
+
+/* ---------- iPhone frame (desktop) ---------- */
+.frame-stage {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #d1d1d6;
+  overflow: hidden;
+}
+@media (prefers-color-scheme: dark) {
+  .frame-stage {
+    background: #2c2c2e;
+  }
+}
+.iphone-wrap {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  transform: scale(var(--frame-scale, 1));
+}
+.iphone {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  border-radius: 56px;
+  box-shadow:
+    0 0 0 10px #111,
+    0 0 0 12px #3a3a3c,
+    0 30px 80px rgba(0, 0, 0, 0.45);
+  --sat: 47px;
+  --sab: 34px;
+  transform: translateZ(0); /* makes fixed children frame-relative */
+  overflow: hidden;
+}
+.iphone .island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  width: 120px;
+  height: 34px;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  background: #000;
+  z-index: 200;
+  pointer-events: none;
+}
+.iphone .home-bar {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  width: 134px;
+  height: 5px;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  background: var(--label);
+  opacity: 0.8;
+  z-index: 200;
+  pointer-events: none;
+}
+.iphone-btn {
+  position: absolute;
+  width: 4px;
+  background: #3a3a3c;
+  border-radius: 2px;
+}

@@ -1,0 +1,35 @@
+{
+  "unii": "362O9ITL9D",
+  "name": "acetaminophen",
+  "ratings": [
+    {
+      "dimension": "liver",
+      "persona": "adult_18_64",
+      "severity": 2,
+      "citations": [
+        {
+          "source": "fda_label",
+          "document_id": "3f1c2a9e-1111-4c2d-9a7b-000000000001",
+          "section": "Warnings",
+          "quote": "Liver warning: This product contains acetaminophen."
+        }
+      ]
+    },
+    { "dimension": "gi_bleeding", "persona": "adult_18_64", "severity": 0 }
+  ],
+  "modifiers": [
+    {
+      "dimension": "liver",
+      "condition": "liver_disease",
+      "severity_change": 1,
+      "citations": [
+        {
+          "source": "fda_label",
+          "document_id": "3f1c2a9e-1111-4c2d-9a7b-000000000001",
+          "section": "Ask a doctor before use if you have"
+        }
+      ]
+    }
+  ],
+  "review_status": "unreviewed"
+}

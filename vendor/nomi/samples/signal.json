@@ -1,0 +1,11 @@
+{
+  "unii": "362O9ITL9D",
+  "dimension": "liver",
+  "event_group": "hepatic_disorders",
+  "age_band": "65+",
+  "sex": "all",
+  "ic": 2.4,
+  "ic025": 2.1,
+  "report_count": 1840,
+  "expected_count": 310.5
+}

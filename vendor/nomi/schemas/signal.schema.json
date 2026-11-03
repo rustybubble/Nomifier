@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "signal.schema.json",
+  "title": "Signal",
+  "description": "One row of FAERS disproportionality evidence for an ingredient on a risk dimension, within an age band and sex (NOMI-053). IC025 above 0 counts as a signal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["unii", "dimension", "age_band", "sex", "ic", "ic025", "report_count"],
+  "properties": {
+    "unii": { "$ref": "common.schema.json#/$defs/unii" },
+    "dimension": { "$ref": "common.schema.json#/$defs/dimension" },
+    "event_group": {
+      "description": "MedDRA event group behind the dimension, e.g. 'hepatic_disorders'.",
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "age_band": {
+      "description": "Patient age band in years. 'all' is the unstratified total.",
+      "type": "string",
+      "enum": ["0-11", "12-17", "18-64", "65+", "all"]
+    },
+    "sex": {
+      "description": "Patient sex as reported. 'all' is the unstratified total.",
+      "type": "string",
+      "enum": ["F", "M", "all"]
+    },
+    "ic": {
+      "description": "Information component: log2((observed + 0.5) / (expected + 0.5)).",
+      "type": "number"
+    },
+    "ic025": {
+      "description": "Lower end of the 95% credibility interval for IC.",
+      "type": "number"
+    },
+    "report_count": {
+      "description": "Reports with both the ingredient and the event group (observed).",
+      "type": "integer",
+      "minimum": 0
+    },
+    "expected_count": {
+      "description": "Reports expected if ingredient and event were unrelated.",
+      "type": "number",
+      "minimum": 0
+    }
+  }
+}

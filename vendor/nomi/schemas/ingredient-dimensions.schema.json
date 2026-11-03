@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ingredient-dimensions.schema.json",
+  "title": "IngredientDimensions",
+  "description": "Knowledge base entry for one ingredient: its severity on each risk dimension per persona, and how conditions or other medications change it. One file per ingredient in pipeline/knowledge/ingredients/ (NOMI-034, NOMI-035).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "unii",
+    "name",
+    "ratings",
+    "modifiers"
+  ],
+  "properties": {
+    "unii": {
+      "$ref": "common.schema.json#/$defs/unii"
+    },
+    "name": {
+      "description": "Ingredient name, e.g. 'naproxen sodium'.",
+      "type": "string",
+      "minLength": 1
+    },
+    "ratings": {
+      "description": "Severity per dimension and persona. Write 0 explicitly where a dimension was considered and has no risk.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/rating"
+      }
+    },
+    "modifiers": {
+      "description": "Adjustments that apply when the user has a condition or takes a type of medication.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/modifier"
+      }
+    },
+    "review_status": {
+      "$ref": "common.schema.json#/$defs/review_status"
+    },
+    "notes": {
+      "description": "Free-text notes for reviewers. Never shown to users.",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "rating": {
+      "title": "Rating",
+      "description": "Severity of this ingredient on one dimension for one persona. A non-zero severity needs at least one citation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "persona",
+        "severity"
+      ],
+      "properties": {
+        "dimension": {
+          "$ref": "common.schema.json#/$defs/dimension"
+        },
+        "persona": {
+          "$ref": "common.schema.json#/$defs/persona"
+        },
+        "severity": {
+          "$ref": "common.schema.json#/$defs/severity"
+        },
+        "citations": {
+          "description": "Sources for this rating. Required when severity is above 0.",
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/citation"
+          }
+        }
+      },
+      "if": {
+        "properties": {
+          "severity": {
+            "minimum": 1
+          }
+        },
+        "required": [
+          "severity"
+        ]
+      },
+      "then": {
+        "required": [
+          "citations"
+        ],
+        "properties": {
+          "citations": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "modifier": {
+      "title": "Modifier",
+      "description": "Severity change on one dimension when the user has a condition or takes a medication type. Exactly one of condition or medication_type. Always needs a citation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "severity_change",
+        "citations"
+      ],
+      "properties": {
+        "dimension": {
+          "$ref": "common.schema.json#/$defs/dimension"
+        },
+        "condition": {
+          "$ref": "common.schema.json#/$defs/condition"
+        },
+        "medication_type": {
+          "$ref": "common.schema.json#/$defs/medication_type"
+        },
+        "personas": {
+          "description": "Personas the modifier applies to. Omit to apply to all.",
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/persona"
+          },
+          "uniqueItems": true
+        },
+        "severity_change": {
+          "description": "Change in severity, e.g. 1 means one level higher. Results are capped at 3.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "citations": {
+          "description": "Sources for this modifier.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "common.schema.json#/$defs/citation"
+          }
+        }
+      },
+      "not": {
+        "required": [
+          "condition",
+          "medication_type"
+        ]
+      },
+      "if": {
+        "not": {
+          "required": [
+            "condition"
+          ]
+        }
+      },
+      "then": {
+        "required": [
+          "medication_type"
+        ]
+      }
+    }
+  }
+}

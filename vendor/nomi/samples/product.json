@@ -1,0 +1,21 @@
+{
+  "ndc11": "99999000101",
+  "spl_set_id": "3f1c2a9e-1111-4c2d-9a7b-000000000001",
+  "spl_version": 4,
+  "brand_name": "Sample Pain Reliever Extra Strength",
+  "generic_name": "acetaminophen",
+  "labeler": "Sample Labeler",
+  "dosage_form": "TABLET, COATED",
+  "marketing_category": "otc_monograph_drug",
+  "otc_category": "internal_analgesics",
+  "uses": ["pain", "fever"],
+  "scope": "in_scope",
+  "ingredients": [
+    { "unii": "362O9ITL9D", "name": "acetaminophen", "strength": 500, "unit": "mg" }
+  ],
+  "inactive_ingredients": [
+    { "name": "corn starch" },
+    { "name": "FD&C red no. 40" }
+  ],
+  "review_status": "preliminary"
+}

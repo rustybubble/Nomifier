@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "title": "Common",
+  "description": "Shared definitions used by every Nomi schema.",
+  "$defs": {
+    "ndc11": {
+      "title": "Ndc11",
+      "description": "National Drug Code normalized to 11 digits with no hyphens, e.g. 50580044902.",
+      "type": "string",
+      "pattern": "^[0-9]{11}$"
+    },
+    "unii": {
+      "title": "Unii",
+      "description": "FDA Unique Ingredient Identifier: 10 uppercase letters or digits, e.g. 362O9ITL9D (acetaminophen).",
+      "type": "string",
+      "pattern": "^[A-Z0-9]{10}$"
+    },
+    "persona": {
+      "title": "Persona",
+      "description": "Type of person a score is for. The list is owned by docs/scoring/dimensions.md (NOMI-016).",
+      "type": "string",
+      "enum": [
+        "adult_18_64",
+        "adult_65_plus",
+        "teen_12_17",
+        "child_6_11",
+        "child_2_5",
+        "under_2",
+        "pregnant",
+        "breastfeeding"
+      ]
+    },
+    "dimension": {
+      "title": "Dimension",
+      "description": "Risk dimension every ingredient is rated on. The list is owned by docs/scoring/dimensions.md (NOMI-016).",
+      "type": "string",
+      "enum": [
+        "liver",
+        "gi_bleeding",
+        "cardiovascular_bp",
+        "kidney",
+        "anticholinergic_cognitive",
+        "sedation_falls",
+        "serotonergic_interactions",
+        "anticoagulant_bleeding",
+        "pediatric",
+        "rebound_overuse",
+        "pregnancy_lactation",
+        "duplicate_dosing",
+        "excipients",
+        "local_skin",
+        "efficacy_evidence"
+      ]
+    },
+    "condition": {
+      "title": "Condition",
+      "description": "Health condition a user can add to their profile. The list is owned by docs/scoring/dimensions.md (NOMI-016).",
+      "type": "string",
+      "enum": [
+        "hypertension",
+        "heart_disease",
+        "kidney_disease",
+        "liver_disease",
+        "stomach_ulcer_or_bleeding",
+        "glaucoma",
+        "enlarged_prostate",
+        "asthma",
+        "diabetes",
+        "thyroid_disease",
+        "phenylketonuria",
+        "heavy_alcohol_use"
+      ]
+    },
+    "medication_type": {
+      "title": "MedicationType",
+      "description": "Type of medication a user already takes. The list is owned by docs/scoring/dimensions.md (NOMI-016).",
+      "type": "string",
+      "enum": [
+        "anticoagulants",
+        "antiplatelets",
+        "maoi",
+        "ssri_snri",
+        "sedatives",
+        "diuretics",
+        "blood_pressure_medications",
+        "corticosteroids"
+      ]
+    },
+    "severity": {
+      "title": "Severity",
+      "description": "Risk severity of one ingredient on one dimension for one persona: 0 none, 1 low, 2 moderate, 3 high.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "tier": {
+      "title": "Tier",
+      "description": "Color band shown with a score.",
+      "type": "string",
+      "enum": ["green", "yellow", "red"]
+    },
+    "review_status": {
+      "title": "ReviewStatus",
+      "description": "How much human review a value has had.",
+      "type": "string",
+      "enum": ["unreviewed", "preliminary", "sampled_ok", "pharmacist_reviewed"]
+    },
+    "citation_source": {
+      "title": "CitationSource",
+      "description": "Kind of source a value comes from.",
+      "type": "string",
+      "enum": [
+        "fda_label",
+        "otc_monograph",
+        "stopp_start",
+        "acb",
+        "faers",
+        "publication",
+        "pharmacist_review"
+      ]
+    },
+    "citation": {
+      "title": "Citation",
+      "description": "Where a value comes from, specific enough that a pharmacist can check it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "document_id"],
+      "properties": {
+        "source": { "$ref": "#/$defs/citation_source" },
+        "document_id": {
+          "description": "Identifier of the document, e.g. an SPL set id, a monograph id, or a DOI.",
+          "type": "string",
+          "minLength": 1
+        },
+        "section": {
+          "description": "Section within the document, e.g. 'Warnings' or 'Table 2'.",
+          "type": "string"
+        },
+        "url": {
+          "description": "Link to the source.",
+          "type": "string",
+          "format": "uri"
+        },
+        "quote": {
+          "description": "Short exact quote supporting the value.",
+          "type": "string",
+          "maxLength": 500
+        }
+      }
+    },
+    "citation_id": {
+      "title": "CitationId",
+      "description": "Key into a citations map, e.g. cit_acetaminophen_liver_warning.",
+      "type": "string",
+      "pattern": "^cit_[a-z0-9_]+$"
+    },
+    "citation_map": {
+      "title": "CitationMap",
+      "description": "Citations keyed by citation id, so rows can reference them without repeating them.",
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^cit_[a-z0-9_]+$" },
+      "additionalProperties": { "$ref": "#/$defs/citation" }
+    },
+    "provenance": {
+      "title": "Provenance",
+      "description": "Which data and code produced a file or record.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "dataset_version", "rubric_version", "code_commit", "generated_at"],
+      "properties": {
+        "schema_version": {
+          "description": "Version of these contracts the data was written with (semver). A major bump means old readers can't read it.",
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "dataset_version": {
+          "description": "Dataset release, e.g. 2026.11.0.",
+          "type": "string",
+          "minLength": 1
+        },
+        "rubric_version": {
+          "description": "Rubric or model version used for scoring, e.g. rubric-v0.1.",
+          "type": "string",
+          "minLength": 1
+        },
+        "code_commit": {
+          "description": "Git commit of the pipeline code.",
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,40}$"
+        },
+        "generated_at": {
+          "description": "When the file or record was produced.",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

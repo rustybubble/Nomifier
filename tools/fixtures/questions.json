@@ -1,0 +1,17 @@
+{
+  "_note": "DEV FIXTURE. Real questions come from A3 (data/questions.json).",
+  "liver": [
+    "How much {ingredient} can I take in a day, counting my other medicines?"
+  ],
+  "gi_bleeding": ["Is {ingredient} safe for my stomach at my age?"],
+  "cardiovascular_bp": ["Is {ingredient} OK with my blood pressure?"],
+  "kidney": ["Could {ingredient} affect my kidneys?"],
+  "anticholinergic_cognitive": [
+    "Is there an option without {ingredient} that won't affect memory?"
+  ],
+  "sedation_falls": ["Will {ingredient} make me drowsy or unsteady?"],
+  "anticoagulant_bleeding": ["Can I take {ingredient} with my blood thinner?"],
+  "efficacy_evidence": [
+    "Is there something that works better than {ingredient}?"
+  ]
+}

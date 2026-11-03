@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "score-record.schema.json",
+  "title": "ScoreRecord",
+  "description": "The result of scoring one product for one profile: what the result screen shows and what golden vectors check (NOMI-051, NOMI-057, NOMI-060).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ndc11",
+    "profile",
+    "score",
+    "tier",
+    "contributions",
+    "hard_stops_triggered",
+    "benchmark",
+    "alternatives",
+    "explanation",
+    "review_status",
+    "provenance"
+  ],
+  "properties": {
+    "ndc11": { "$ref": "common.schema.json#/$defs/ndc11" },
+    "profile": { "$ref": "#/$defs/profile" },
+    "score": {
+      "description": "Safety score from 0 (highest risk) to 100.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "tier": { "$ref": "common.schema.json#/$defs/tier" },
+    "contributions": {
+      "description": "Points taken off per dimension, largest first.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/contribution" }
+    },
+    "hard_stops_triggered": {
+      "description": "Hard-stop rules that fired. Any entry makes the tier red.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/triggered_hard_stop" }
+    },
+    "benchmark": {
+      "description": "Rank among products with the same use for this profile. Null when there are too few comparable products.",
+      "oneOf": [{ "$ref": "#/$defs/benchmark" }, { "type": "null" }]
+    },
+    "alternatives": {
+      "description": "Safer options with a shared use, best first. Empty means 'ask your pharmacist'.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/alternative" }
+    },
+    "explanation": {
+      "description": "Plain-language sentences, each with its sources.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/explanation_line" }
+    },
+    "review_status": { "$ref": "common.schema.json#/$defs/review_status" },
+    "provenance": { "$ref": "common.schema.json#/$defs/provenance" }
+  },
+  "$defs": {
+    "profile": {
+      "title": "Profile",
+      "description": "Who the score is for. Lives only on the user's device.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["persona", "conditions", "medication_types"],
+      "properties": {
+        "persona": { "$ref": "common.schema.json#/$defs/persona" },
+        "conditions": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/condition" },
+          "uniqueItems": true
+        },
+        "medication_types": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/medication_type" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "contribution": {
+      "title": "Contribution",
+      "description": "Points one dimension took off the score, and why.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimension", "points", "citations"],
+      "properties": {
+        "dimension": { "$ref": "common.schema.json#/$defs/dimension" },
+        "points": {
+          "description": "Points taken off on this dimension.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "ingredient_uniis": {
+          "description": "Ingredients that contributed.",
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/unii" }
+        },
+        "citations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "common.schema.json#/$defs/citation" }
+        }
+      }
+    },
+    "triggered_hard_stop": {
+      "title": "TriggeredHardStop",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "message"],
+      "properties": {
+        "id": {
+          "description": "Hard-stop rule id from the term tables.",
+          "type": "string",
+          "pattern": "^hs_[a-z0-9_]+$"
+        },
+        "message": {
+          "description": "Rendered message shown to the user.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "benchmark": {
+      "title": "Benchmark",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["use", "percentile"],
+      "properties": {
+        "use": {
+          "description": "Use the product is compared within, e.g. 'pain'.",
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "percentile": {
+          "description": "Share of comparable products this one scores better than, 0 to 100.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "alternative": {
+      "title": "Alternative",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ndc11", "score", "shared_use", "reason"],
+      "properties": {
+        "ndc11": { "$ref": "common.schema.json#/$defs/ndc11" },
+        "score": {
+          "description": "The alternative's score for the same profile.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "shared_use": {
+          "description": "Use both products share, e.g. 'pain'.",
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "reason": {
+          "description": "One-line reason it's safer for this profile.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "explanation_line": {
+      "title": "ExplanationLine",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["template_id", "text", "citations"],
+      "properties": {
+        "template_id": {
+          "description": "Template the sentence was built from.",
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "description": "Rendered sentence.",
+          "type": "string",
+          "minLength": 1
+        },
+        "citations": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/citation" }
+        }
+      }
+    }
+  }
+}

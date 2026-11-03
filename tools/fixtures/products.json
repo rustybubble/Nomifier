@@ -1,0 +1,174 @@
+[
+  {
+    "ndc11": "99999000101",
+    "spl_set_id": "00000000-0000-4000-8000-000000000101",
+    "spl_version": 1,
+    "brand_name": "DEV Pain Relief Extra Strength",
+    "generic_name": "acetaminophen",
+    "labeler": "DEV FIXTURE (not a real product)",
+    "dosage_form": "TABLET, COATED",
+    "marketing_category": "otc_monograph_drug",
+    "otc_category": "internal_analgesics",
+    "uses": ["pain", "fever"],
+    "scope": "in_scope",
+    "ingredients": [
+      {
+        "unii": "362O9ITL9D",
+        "name": "acetaminophen",
+        "strength": 500,
+        "unit": "mg"
+      }
+    ],
+    "review_status": "unreviewed"
+  },
+  {
+    "ndc11": "99999000202",
+    "spl_set_id": "00000000-0000-4000-8000-000000000202",
+    "spl_version": 1,
+    "brand_name": "DEV Pain Relief PM",
+    "generic_name": "acetaminophen and diphenhydramine",
+    "labeler": "DEV FIXTURE (not a real product)",
+    "dosage_form": "TABLET, COATED",
+    "marketing_category": "otc_monograph_drug",
+    "otc_category": "internal_analgesics",
+    "uses": ["pain", "sleep"],
+    "scope": "in_scope",
+    "ingredients": [
+      {
+        "unii": "362O9ITL9D",
+        "name": "acetaminophen",
+        "strength": 500,
+        "unit": "mg"
+      },
+      {
+        "unii": "DEVDIPHENH",
+        "name": "diphenhydramine HCl",
+        "strength": 25,
+        "unit": "mg"
+      }
+    ],
+    "review_status": "unreviewed"
+  },
+  {
+    "ndc11": "99999000303",
+    "spl_set_id": "00000000-0000-4000-8000-000000000303",
+    "spl_version": 1,
+    "brand_name": "DEV Ibuprofen 200",
+    "generic_name": "ibuprofen",
+    "labeler": "DEV FIXTURE (not a real product)",
+    "dosage_form": "TABLET, COATED",
+    "marketing_category": "otc_monograph_drug",
+    "otc_category": "internal_analgesics",
+    "uses": ["pain", "fever"],
+    "scope": "in_scope",
+    "ingredients": [
+      {
+        "unii": "DEVIBUPROF",
+        "name": "ibuprofen",
+        "strength": 200,
+        "unit": "mg"
+      }
+    ],
+    "review_status": "unreviewed"
+  },
+  {
+    "ndc11": "99999000404",
+    "spl_set_id": "00000000-0000-4000-8000-000000000404",
+    "spl_version": 1,
+    "brand_name": "DEV Allergy Relief",
+    "generic_name": "diphenhydramine HCl",
+    "labeler": "DEV FIXTURE (not a real product)",
+    "dosage_form": "TABLET",
+    "marketing_category": "otc_monograph_drug",
+    "otc_category": "antihistamines",
+    "uses": ["allergy"],
+    "scope": "in_scope",
+    "ingredients": [
+      {
+        "unii": "DEVDIPHENH",
+        "name": "diphenhydramine HCl",
+        "strength": 25,
+        "unit": "mg"
+      }
+    ],
+    "review_status": "unreviewed"
+  },
+  {
+    "ndc11": "99999000505",
+    "spl_set_id": "00000000-0000-4000-8000-000000000505",
+    "spl_version": 1,
+    "brand_name": "DEV Loratadine 24hr",
+    "generic_name": "loratadine",
+    "labeler": "DEV FIXTURE (not a real product)",
+    "dosage_form": "TABLET",
+    "marketing_category": "nda",
+    "otc_category": "antihistamines",
+    "uses": ["allergy"],
+    "scope": "in_scope",
+    "ingredients": [
+      {
+        "unii": "DEVLORATAD",
+        "name": "loratadine",
+        "strength": 10,
+        "unit": "mg"
+      }
+    ],
+    "review_status": "unreviewed"
+  },
+  {
+    "ndc11": "99999000606",
+    "spl_set_id": "00000000-0000-4000-8000-000000000606",
+    "spl_version": 1,
+    "brand_name": "DEV Cold & Flu Day",
+    "generic_name": "acetaminophen, dextromethorphan HBr, phenylephrine HCl",
+    "labeler": "DEV FIXTURE (not a real product)",
+    "dosage_form": "CAPSULE, LIQUID FILLED",
+    "marketing_category": "otc_monograph_drug",
+    "otc_category": "cough_cold",
+    "uses": ["cough", "congestion", "pain"],
+    "scope": "in_scope",
+    "ingredients": [
+      {
+        "unii": "362O9ITL9D",
+        "name": "acetaminophen",
+        "strength": 325,
+        "unit": "mg"
+      },
+      {
+        "unii": "DEVDEXTROM",
+        "name": "dextromethorphan HBr",
+        "strength": 10,
+        "unit": "mg"
+      },
+      {
+        "unii": "DEVPHENYLE",
+        "name": "phenylephrine HCl",
+        "strength": 5,
+        "unit": "mg"
+      }
+    ],
+    "review_status": "unreviewed"
+  },
+  {
+    "ndc11": "99999000707",
+    "spl_set_id": "00000000-0000-4000-8000-000000000707",
+    "spl_version": 1,
+    "brand_name": "DEV Mystery Remedy",
+    "generic_name": "unratedium",
+    "labeler": "DEV FIXTURE (not a real product)",
+    "dosage_form": "TABLET",
+    "marketing_category": "otc_monograph_drug",
+    "otc_category": "digestive",
+    "uses": ["stomach"],
+    "scope": "in_scope",
+    "ingredients": [
+      {
+        "unii": "DEVUNRATED",
+        "name": "unratedium",
+        "strength": 1,
+        "unit": "mg"
+      }
+    ],
+    "review_status": "unreviewed"
+  }
+]
