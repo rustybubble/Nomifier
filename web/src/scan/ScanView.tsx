@@ -24,6 +24,10 @@ export interface ScanViewProps {
   onTracks?: (tracks: Track[]) => void;
   showHud?: boolean;
   socketRef?: React.MutableRefObject<ScanSocket | null>;
+  /** The live <video> element (null before the camera starts / after unmount). Barcode lock reads it. */
+  onVideo?: (video: HTMLVideoElement | null) => void;
+  /** Long-press (500 ms) on a box: CV HUD details. */
+  onLongPressTrack?: (t: Track) => void;
 }
 
 type Phase = "idle" | "starting" | "live" | "error";
@@ -96,6 +100,7 @@ export default function ScanView(props: ScanViewProps) {
     () => () => {
       stopCamera(videoRef.current, streamRef.current);
       streamRef.current = null;
+      propsRef.current.onVideo?.(null);
     },
     [],
   );
@@ -200,6 +205,7 @@ export default function ScanView(props: ScanViewProps) {
     try {
       streamRef.current = await startCamera(video);
       setPhase("live");
+      propsRef.current.onVideo?.(video);
     } catch (e) {
       setErr(
         e instanceof CameraError
@@ -210,7 +216,49 @@ export default function ScanView(props: ScanViewProps) {
     }
   }, []);
 
+  const hitAt = (clientX: number, clientY: number) => {
+    const m = mappingRef.current;
+    const root = rootRef.current;
+    if (!m || !root) return null;
+    const r = root.getBoundingClientRect();
+    return store.current.hitTest(clientX - r.left, clientY - r.top, (b) =>
+      boxToScreen(m, b),
+    );
+  };
+
+  // Long-press: 500 ms without moving more than 10 px. Suppresses the click that follows.
+  const press = useRef<{
+    x: number;
+    y: number;
+    timer: number;
+    fired: boolean;
+  } | null>(null);
+  const onPointerDown = (ev: React.PointerEvent) => {
+    if (!propsRef.current.onLongPressTrack) return;
+    const { clientX: x, clientY: y } = ev;
+    const timer = window.setTimeout(() => {
+      const hit = hitAt(x, y);
+      if (hit && press.current) {
+        press.current.fired = true;
+        propsRef.current.onLongPressTrack?.(hit.track);
+      }
+    }, 500);
+    press.current = { x, y, timer, fired: false };
+  };
+  const onPointerMove = (ev: React.PointerEvent) => {
+    const p = press.current;
+    if (p && Math.hypot(ev.clientX - p.x, ev.clientY - p.y) > 10)
+      window.clearTimeout(p.timer);
+  };
+  const onPointerUp = () => {
+    if (press.current) window.clearTimeout(press.current.timer);
+  };
+
   const onTap = (ev: React.MouseEvent) => {
+    if (press.current?.fired) {
+      press.current = null;
+      return;
+    }
     const video = videoRef.current;
     const m = mappingRef.current;
     const root = rootRef.current;
@@ -268,6 +316,11 @@ export default function ScanView(props: ScanViewProps) {
     <div
       ref={rootRef}
       onClick={onTap}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onContextMenu={(e) => e.preventDefault()}
       style={{
         position: "relative",
         width: "100%",
