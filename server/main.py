@@ -10,6 +10,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from server import bots
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 MEDIA_DIR = ROOT / "media"
@@ -33,12 +35,7 @@ def health() -> dict:
 
 
 # A4: Bot API (find / unknown / callbacks / approvals).
-try:
-    from server import bots
-except ImportError:  # bots.py lands in A4
-    bots = None
-if bots is not None:
-    app.include_router(bots.router)
+app.include_router(bots.router)
 
 # B2: the recognition server mounts WebSocket /ws/scan here, e.g.
 #   from vision.realtime import router as scan_router
