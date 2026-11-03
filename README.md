@@ -6,7 +6,7 @@ Point your phone at medicine and every box and bottle lights up green, orange or
 
 Nomifier is our entry in the BDBI x SpaceXSI Grokathon (Georgia Tech, November 2026). It builds on BDBI's [Nomi](https://github.com/gt-big-data/nomi), the over-the-counter medicine safety scanner that turns one barcode into a personalized, cited 0–100 score. Nomifier does the same for everything in view, live: a GPU laptop recognizes and tracks each product in the camera feed, the phone scores it locally with Nomi's own data formats, and a crew of Grok Bots handles what no API can.
 
-The user's health profile never leaves the phone. The server only sees camera frames, and the Bots only see a product ID and a ZIP code.
+The user's health profile never leaves the phone. The server only sees camera frames, and the Bots only see a product ID, a product photo and a ZIP code.
 
 ## On the phone
 
@@ -77,6 +77,37 @@ flowchart LR
 Nomifier implements Nomi's scoring function (Nomi `docs/system-design.md` §6.2) over Nomi's `term-tables` format: per risk dimension, each ingredient's points for the persona plus any matching conditions and medication types, combined across ingredients (`max_plus_stacking`), subtracted from 100. Any hard stop forces red; tiers are green ≥ 75, yellow 50–74, red below 50. Every point traces to a citation (DailyMed label section, ACB or STOPP/START). The TypeScript engine and a Python twin are checked against the same golden vectors. LLMs never produce scores.
 
 Demo values are in Nomi's format but are not Nomi's rubric, and nothing here is medical advice.
+
+## Privacy
+
+- **Profiles, conditions, medications and the cabinet stay on the phone** (localStorage). Scoring runs there.
+- **The recognition server** gets camera frames and returns boxes, NDC11s and track status, never a score or a profile.
+- **The Bots** get an NDC11, the ingredient list, a product crop URL, a ZIP or an approval decision. Nothing else.
+- **Enforced by a test.** `server/tests/test_privacy.py` fails the build if any request model or webhook payload in
+  the server has a profile-shaped field, if a Nomi persona, condition or medication-type value appears as a string in
+  server code, or if `web/src/api.ts` (the phone's only network module) mentions one.
+
+## How we built it
+
+Every task was a small branch and a pull request into `main`; the specs are in the
+[implementation plan](Nomifier%20-%203-person%20implementation%20plan.md) §7–§9.
+
+<!-- TODO(A9, 9:35): regenerate this list from the final PR state and add who/which agent built each task. -->
+
+| Task | Branch / PR | Built by |
+| --- | --- | --- |
+| A1 repo scaffold, Nomi vendoring, frozen contract | [#1](https://github.com/rustybubble/nomifier/pull/1) | cloud coding agent |
+| A4 Bot API, SQLite store, privacy test | [#2](https://github.com/rustybubble/nomifier/pull/2) | cloud coding agent |
+| A8 shared Bot skill, routines doc | [#3](https://github.com/rustybubble/nomifier/pull/3) | cloud coding agent |
+| A2 product resolver (openFDA → DailyMed → Nomi schema) | [#4](https://github.com/rustybubble/nomifier/pull/4) | cloud coding agent |
+| A3 scoring twin, data validator, golden vectors | [#5](https://github.com/rustybubble/nomifier/pull/5) | cloud coding agent |
+| C1–C4 iPhone PWA shell, camera + AR overlay, on-device scoring, mock server | `c1-pwa-shell` | TODO |
+| A branches integrated, scoring wired into the AR overlay | `integrate-a` | TODO |
+
+**Grok Bot receipts** (`bots/screenshots/`):
+
+<!-- TODO(A9): add the images once A5–A7 are set up. Expected files: the webhook and schedule routines, the taught
+"Aisle Finder lookup" task, an Aisle Finder run stopping for approval, the Coverage Clerk PR, the Label Watch Page. -->
 
 ## Repo layout
 
