@@ -227,4 +227,87 @@ export class ScanSocket {
 }
 
 // ---------------- REST (C9) ----------------
-// (nothing yet: /api/find, /api/unknown, polling /api/finds/{id}, /api/unknowns/{id} land with C9)
+// Bodies carry ONLY ndc11, zip, crop_url, decision.
+export interface FindOption {
+  store: string;
+  product: string;
+  ndc11?: string | null;
+  ndc11_if_shown?: string | null;
+  price?: number | string | null;
+  in_stock?: boolean | null;
+  link: string;
+}
+export interface FindRecord {
+  find_id: string;
+  status: "waiting" | "done" | "failed" | string;
+  options?: FindOption[];
+  cart?: string;
+  evidence_url?: string | null;
+  error?: string;
+}
+export interface UnknownRecord {
+  job_id: string;
+  status: "waiting" | "done" | "not_identified" | "failed" | string;
+  pr_url?: string;
+  product?: { brand_name?: string; generic_name?: string } & Record<
+    string,
+    unknown
+  >;
+  validated?: boolean;
+  dailymed_setid?: string | null;
+  reason?: string;
+  error?: string;
+}
+
+async function rest<T>(
+  method: "GET" | "POST",
+  path: string,
+  body?: Record<string, string>,
+): Promise<T> {
+  const res = await fetch(serverBase().replace(/\/$/, "") + path, {
+    method,
+    headers: body ? { "Content-Type": "application/json" } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!res.ok) {
+    let detail = "";
+    try {
+      const j = (await res.json()) as { detail?: unknown };
+      if (typeof j.detail === "string") detail = j.detail;
+    } catch {
+      /* no JSON body */
+    }
+    throw new Error(`HTTP ${res.status}${detail ? `: ${detail}` : ""}`);
+  }
+  return (await res.json()) as T;
+}
+
+export const findNearby = (ndc11: string, zip: string) =>
+  rest<{ find_id: string }>("POST", "/api/find", { ndc11, zip });
+export const getFind = (id: string) =>
+  rest<FindRecord>("GET", `/api/finds/${encodeURIComponent(id)}`);
+export const sendUnknown = (crop_url: string) =>
+  rest<{ job_id: string }>("POST", "/api/unknown", { crop_url });
+export const getUnknown = (id: string) =>
+  rest<UnknownRecord>("GET", `/api/unknowns/${encodeURIComponent(id)}`);
+export const sendApproval = (id: string, decision: "approve" | "reject") =>
+  rest<{ ok: boolean }>("POST", `/api/approvals/${encodeURIComponent(id)}`, {
+    decision,
+  });
+
+/** Calls fn every intervalMs until isDone(result); rejects on timeout, abort, or fn error. */
+export async function poll<T>(
+  fn: () => Promise<T>,
+  isDone: (v: T) => boolean,
+  opts: { intervalMs?: number; timeoutMs?: number; signal?: AbortSignal } = {},
+): Promise<T> {
+  const { intervalMs = 2000, timeoutMs = 180000, signal } = opts;
+  const t0 = Date.now();
+  for (;;) {
+    if (signal?.aborted) throw new Error("aborted");
+    const v = await fn();
+    if (isDone(v)) return v;
+    if (Date.now() - t0 + intervalMs > timeoutMs) throw new Error("timeout");
+    await new Promise((r) => setTimeout(r, intervalMs));
+  }
+}

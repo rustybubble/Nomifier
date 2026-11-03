@@ -14,7 +14,7 @@ export interface StyleContext {
   data: AppData;
   profile: UserProfile;
   cabinet?: Product[];
-  useFilter?: string | null; // "I need…" chip; products without this use are dimmed
+  useFilter?: string[] | null; // "I need…" chip uses; products sharing none of them are dimmed
 }
 
 /** "tylenol-line" -> "Tylenol line" */
@@ -42,7 +42,8 @@ export function makeStyleFor(ctx: StyleContext): (t: Track) => TrackStyle {
         label: "Not in our data yet",
       };
 
-    const dim = !!useFilter && !product.uses.includes(useFilter);
+    const dim =
+      !!useFilter?.length && !product.uses.some((u) => useFilter.includes(u));
     const r = scoreMemo(product, profile, data);
     if (r.status === "unrated")
       return {

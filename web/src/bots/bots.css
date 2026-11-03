@@ -1,0 +1,109 @@
+.bot-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+.bot-sub {
+  margin: 0;
+  color: var(--label2);
+  font-size: 15px;
+}
+.bot-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--label2);
+}
+.bot-field input {
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--fill);
+  color: var(--label);
+  font-size: 17px;
+  border: 0;
+}
+.bot-wide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.bot-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--label2);
+}
+.bot-err {
+  margin: 0;
+  color: var(--tier-red);
+  font-size: 15px;
+}
+.bot-wait {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 0;
+  text-align: center;
+}
+.bot-spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--fill);
+  border-top-color: var(--tint);
+  animation: bot-spin 0.9s linear infinite;
+}
+@keyframes bot-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.bot-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--label);
+  font-size: 15px;
+}
+.bot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bot-strong {
+  margin: 0;
+  font-weight: 600;
+}
+.bot-link {
+  color: var(--tint);
+  font-weight: 600;
+}
+.bot-actions {
+  display: flex;
+  gap: 10px;
+}
+.bot-actions > button {
+  flex: 1;
+}
+.bot-reject {
+  min-height: 44px;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--label);
+  font-weight: 600;
+}
+.bot-crop {
+  width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: var(--fill);
+}

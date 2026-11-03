@@ -1,0 +1,33 @@
+.ar-chips {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--sat, env(safe-area-inset-top)) + 100px);
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  padding: 0 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.ar-chips::-webkit-scrollbar {
+  display: none;
+}
+.ar-chip {
+  flex: none;
+  min-height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  font: 600 15px -apple-system, system-ui, sans-serif;
+  white-space: nowrap;
+}
+.ar-chip-on {
+  background: #fff;
+  color: #111;
+}

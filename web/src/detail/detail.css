@@ -1,0 +1,289 @@
+/* Sizes use calc(px * var(--text-scale, 1)) so the large-text setting scales the sheet. */
+.dt {
+  --s: var(--text-scale, 1);
+  --amber-bg: rgba(249, 115, 22, 0.14);
+  --amber-fg: #9a3412;
+  --red-bg: rgba(220, 38, 38, 0.1);
+  font-size: calc(16px * var(--s));
+  line-height: 1.35;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  .dt {
+    --amber-fg: #fdba74;
+    --red-bg: rgba(220, 38, 38, 0.18);
+  }
+}
+.dt p,
+.dt h2,
+.dt h3,
+.dt ul {
+  margin: 0;
+}
+.dt ul {
+  padding: 0;
+  list-style: none;
+}
+.dt a {
+  color: var(--tint);
+}
+.dt-dim {
+  color: var(--label2);
+  font-size: calc(14px * var(--s));
+}
+
+/* header */
+.dt-head {
+  --c: var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--fill);
+  border-left: 6px solid var(--c);
+}
+.dt-green {
+  --c: var(--tier-green);
+}
+.dt-orange {
+  --c: var(--tier-orange);
+}
+.dt-red {
+  --c: var(--tier-red);
+}
+.dt-gray {
+  --c: var(--gray);
+}
+.dt-dashed {
+  border: 2px dashed var(--gray);
+  background: transparent;
+}
+.dt-icon {
+  flex: none;
+  width: calc(32px * var(--s));
+  height: calc(32px * var(--s));
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--c);
+  color: #fff;
+  font-size: calc(18px * var(--s));
+  font-weight: 800;
+}
+.dt-head-main {
+  flex: 1;
+  min-width: 0;
+}
+.dt-verdict {
+  font-size: calc(22px * var(--s));
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--c);
+}
+.dt-gray .dt-verdict {
+  color: var(--label);
+}
+.dt-for {
+  margin-top: 2px;
+  color: var(--label2);
+  font-size: calc(14px * var(--s));
+}
+.dt-score {
+  flex: none;
+  color: var(--c);
+  font-size: calc(48px * var(--s));
+  line-height: 1;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.dt-score small {
+  font-size: calc(14px * var(--s));
+  font-weight: 600;
+  color: var(--label2);
+}
+.dt-brand {
+  font-size: calc(18px * var(--s));
+  font-weight: 600;
+}
+
+/* banners */
+.dt-banner {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: calc(15px * var(--s));
+}
+.dt-amber {
+  background: var(--amber-bg);
+  color: var(--amber-fg);
+  border: 1px solid var(--tier-orange);
+}
+.dt-warn {
+  background: var(--red-bg);
+  border: 1px solid var(--tier-red);
+}
+
+/* hard stops */
+.dt-hard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dt-hard-line {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--red-bg);
+  border: 1px solid var(--tier-red);
+  font-weight: 600;
+}
+.dt-hard-line p {
+  color: var(--tier-red);
+}
+
+/* sections */
+.dt-h {
+  margin: 6px 0 6px;
+  font-size: calc(13px * var(--s));
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--label2);
+}
+.dt-risks {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.dt-risk-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.dt-risk-top p {
+  font-size: calc(16px * var(--s));
+}
+.dt-risk-top .pill {
+  flex: none;
+  font-size: calc(12px * var(--s));
+}
+.dt-source {
+  margin-top: 4px;
+  padding-left: 10px;
+  border-left: 2px solid var(--separator);
+  color: var(--label2);
+  font-size: calc(13px * var(--s));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  font-weight: 400;
+}
+.dt-source-name {
+  font-weight: 600;
+}
+.dt-quote {
+  font-style: italic;
+  quotes: "\201C" "\201D";
+}
+.dt-ing li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 0.5px solid var(--separator);
+}
+.dt-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.dt-note {
+  color: var(--label2);
+  font-size: calc(15px * var(--s));
+}
+.dt-members li {
+  padding: 10px 0;
+  border-bottom: 0.5px solid var(--separator);
+}
+.dt-alt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--fill);
+}
+.dt-alt-score {
+  font-size: calc(24px * var(--s));
+  font-weight: 800;
+  color: var(--c);
+  white-space: nowrap;
+}
+.dt-still {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #000;
+}
+
+/* buttons */
+.dt-btn {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: var(--fill);
+  color: var(--tint);
+  font-size: calc(16px * var(--s));
+  font-weight: 600;
+}
+.dt-btn:active {
+  opacity: 0.6;
+}
+.dt-btn-primary {
+  background: var(--tint);
+  color: #fff;
+}
+.dt-btn-full {
+  width: 100%;
+}
+.dt-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(130px * var(--s)), 1fr));
+  gap: 8px;
+}
+.dt-ask-list {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--fill);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.dt-ask-list ul {
+  list-style: disc;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dt-copied {
+  color: var(--tier-green);
+  font-size: calc(14px * var(--s));
+  font-weight: 600;
+  min-height: 1em;
+}
+.dt-disclaimer {
+  margin-top: 6px;
+  text-align: center;
+  color: var(--label2);
+  font-size: calc(12px * var(--s));
+}
