@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import ScanView from "./scan/ScanView";
+import ScanTab from "./scan/ScanTab";
 import TabBar, { type TabId } from "./shell/TabBar";
 import Page from "./shell/Page";
 import { ToastProvider } from "./shell/Toast";
@@ -58,7 +58,7 @@ export default function App() {
         >
           {tab === "scan" && (
             <div className="scan-pane">
-              <ScanView />
+              <ScanTab />
             </div>
           )}
           {tab === "cabinet" && (

@@ -81,11 +81,13 @@ function pill(
   fill: string,
   fg: string,
   font: string,
+  viewW = Infinity,
 ): number {
   ctx.font = font;
   const padX = 8;
   const h = 22;
   const w = ctx.measureText(text).width + padX * 2;
+  x = fitX(x, w, viewW);
   ctx.fillStyle = fill;
   rr(ctx, x, y, w, h, h / 2);
   ctx.fill();
@@ -93,6 +95,11 @@ function pill(
   ctx.textBaseline = "middle";
   ctx.fillText(text, x + padX, y + h / 2 + 0.5);
   return w;
+}
+
+/** Keeps a w-wide label inside the view (4px margin) so labels near the edge aren't clipped. */
+export function fitX(x: number, w: number, viewW: number): number {
+  return Math.max(4, Math.min(x, viewW - w - 4));
 }
 
 /** Draws all displayed tracks. Canvas backing store must be cssW*dpr x cssH*dpr. */
@@ -107,6 +114,7 @@ export function draw(
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const viewW = ctx.canvas.width / dpr;
 
   const shown: ScreenTrack[] = [];
   for (const d of displayed) {
@@ -141,32 +149,35 @@ export function draw(
           s.color,
           "#fff",
           "bold 14px -apple-system, system-ui, sans-serif",
+          viewW,
         );
       }
       let y = y2 + 6;
       if (s.label) {
         ctx.font = "600 13px -apple-system, system-ui, sans-serif";
         const w = ctx.measureText(s.label).width + 12;
+        const lx = fitX(x1, w, viewW);
         ctx.fillStyle = "rgba(0,0,0,0.6)";
-        rr(ctx, x1, y, w, 20, 6);
+        rr(ctx, lx, y, w, 20, 6);
         ctx.fill();
         ctx.fillStyle = "#fff";
         ctx.textBaseline = "middle";
-        ctx.fillText(s.label, x1 + 6, y + 10.5);
+        ctx.fillText(s.label, lx + 6, y + 10.5);
         y += 24;
       }
-      let cx = x1;
+      // One chip per row so long chips ("Also acetaminophen", "⚠ Label updated") never run off screen.
       for (const c of s.chips ?? []) {
-        cx +=
-          pill(
-            ctx,
-            c,
-            cx,
-            y,
-            COLORS.amber,
-            "#1F1300",
-            "600 12px -apple-system, system-ui, sans-serif",
-          ) + 4;
+        pill(
+          ctx,
+          c,
+          x1,
+          y,
+          COLORS.amber,
+          "#1F1300",
+          "600 12px -apple-system, system-ui, sans-serif",
+          viewW,
+        );
+        y += 26;
       }
     }
     ctx.restore();

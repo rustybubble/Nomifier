@@ -4,12 +4,14 @@ import "./index.css";
 import "./shell/shell.css";
 import App from "./App.tsx";
 import IPhoneFrame from "./shell/IPhoneFrame.tsx";
+import { DataProvider } from "./data/DataProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <IPhoneFrame>
-      {/* TODO: a DataProvider (src/data) will wrap <App /> here */}
-      <App />
+      <DataProvider>
+        <App />
+      </DataProvider>
     </IPhoneFrame>
   </StrictMode>,
 );

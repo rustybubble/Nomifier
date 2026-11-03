@@ -2,7 +2,7 @@
 
 Point your phone at medicine and every box and bottle lights up green, orange or red, scored for the person who will take it.
 
-![Live AR outlines on a shelf of medicine](docs/media/scan-live.png)
+![Nomifier running in its desktop iPhone frame](docs/media/frame-iphone.png)
 
 Nomifier is our entry in the BDBI x SpaceXSI Grokathon (Georgia Tech, November 2026). It builds on BDBI's [Nomi](https://github.com/gt-big-data/nomi), the over-the-counter medicine safety scanner that turns one barcode into a personalized, cited 0–100 score. Nomifier does the same for everything in view, live: a GPU laptop recognizes and tracks each product in the camera feed, the phone scores it locally with Nomi's own data formats, and a crew of Grok Bots handles what no API can.
 
@@ -12,14 +12,14 @@ The user's health profile never leaves the phone. The server only sees camera fr
 
 An installable PWA that looks and behaves like a native iPhone app. Add it to the home screen from Safari and it opens full screen, with a tab bar, bottom sheets and safe-area layouts.
 
-|                                                                                                                           |                                                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| ![Live scan](docs/media/scan-live.png)                                                                                    | ![Detail sheet](docs/media/detail-sheet.png)                                                                        |
-| **Live AR.** Outlines glide with each product, with a score badge and a tier icon (✓ ! ✕) so color isn't the only signal. | **Detail sheet.** Tap a product: Nomi's verdict and score, one plain sentence per risk, and the DailyMed source.    |
-| ![Look-alike](docs/media/lookalike.png)                                                                                   | ![Profiles](docs/media/profiles.png)                                                                                |
-| **Look-alikes.** Tylenol vs Tylenol PM stays gray and dashed until the barcode confirms it. No guessed colors.            | **Profiles.** "Me", "Mom, 65+, high blood pressure". Switching recolors everything instantly, with no network call. |
-| ![Medicine Cabinet](docs/media/cabinet.png)                                                                               | ![Aisle Finder](docs/media/aisle-finder.png)                                                                        |
-| **Medicine Cabinet.** Products you take, stored on the phone. Live outlines flag duplicate active ingredients.            | **Find nearby.** The safer pick isn't here? Aisle Finder finds it, or a cheaper store brand, in stock nearby.       |
+|                                                                                                                                                                                                                      |                                                                                                                                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ![Live scan](docs/media/scan-live.png)                                                                                                                                                                               | ![Profile switch](docs/media/profile-switch.png)                                                                                                                                     |
+| **Live AR.** Outlines glide with each product, with a score badge and a tier icon (✓ ! ✕) so color isn't the only signal. Look-alikes stay gray and dashed until the barcode confirms them; unrated products say so. | **Profiles.** One tap switches "Me" to "Mom, 65+, high blood pressure" and everything recolors instantly, with no network call (the cold medicine drops from 84 green to 64 orange). |
+
+_Screenshots use the mock recognition server and dev fixtures (fake products), at an iPhone viewport._
+
+Coming next: the detail sheet with Nomi's verdict, cited risks and DailyMed source; the Medicine Cabinet with duplicate-ingredient warnings; and Find nearby (Aisle Finder).
 
 Also on the phone:
 

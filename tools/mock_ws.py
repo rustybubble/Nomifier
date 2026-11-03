@@ -242,6 +242,14 @@ def create_app(
         except RuntimeError:  # receive() after disconnect
             return
 
+    @app.get("/data/catalog/families.json")
+    def families():  # real path per contract; dev copy lives at tools/fixtures/families.json
+        real = ROOT / "data" / "catalog" / "families.json"
+        return FileResponse(
+            real if real.exists() else FIXTURES / "families.json",
+            media_type="application/json",
+        )
+
     @app.get("/data/{name}")
     def data(name: str):
         p = data_path(name)

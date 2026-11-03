@@ -35,7 +35,7 @@ export async function loadAppData(
     get<Templates>("templates.json"),
     get<Questions>("questions.json", {}),
     get<LabelStatus>("label_status.json", {}),
-    get<Families>("families.json", {}),
+    get<Families>("catalog/families.json", {}), // written by B5 under data/catalog/
   ]);
   return {
     products,

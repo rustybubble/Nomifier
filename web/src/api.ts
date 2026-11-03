@@ -1,5 +1,6 @@
 // The app's ONE network module (WebSocket + REST).
-// PRIVACY: never put profile / persona / condition / medication data in any payload here.
+// PRIVACY: payloads carry only frames, ndc11s, ZIPs, crop URLs and decisions. Never any health
+// data about the user. server/tests/test_privacy.py scans this file for it.
 import type {
   FrameHeader,
   PinMsg,
