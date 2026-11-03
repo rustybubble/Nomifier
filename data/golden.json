@@ -1,0 +1,44 @@
+[
+  {
+    "note": "Nomi sample: adult base liver row (10 points)",
+    "tables": "nomi_sample",
+    "ndc11": "99999000101",
+    "profile": { "persona": "adult_18_64", "conditions": [], "medication_types": [] },
+    "expected": { "score": 90, "tier": "green" }
+  },
+  {
+    "note": "Nomi sample: liver_disease modifier stacks on the base row (10 + 15), lands exactly on green_min",
+    "tables": "nomi_sample",
+    "ndc11": "99999000101",
+    "profile": { "persona": "adult_18_64", "conditions": ["liver_disease"], "medication_types": [] },
+    "expected": { "score": 75, "tier": "green" }
+  },
+  {
+    "note": "Nomi sample: a condition with no rows changes nothing",
+    "tables": "nomi_sample",
+    "ndc11": "99999000101",
+    "profile": { "persona": "adult_18_64", "conditions": ["hypertension"], "medication_types": [] },
+    "expected": { "score": 90, "tier": "green" }
+  },
+  {
+    "note": "Nomi sample: product hard stop (ndc11) for child_2_5 forces red with no points",
+    "tables": "nomi_sample",
+    "ndc11": "99999000101",
+    "profile": { "persona": "child_2_5", "conditions": [], "medication_types": [] },
+    "expected": { "score": 100, "tier": "red" }
+  },
+  {
+    "note": "Nomi sample: ingredient hard stop (unii) for under_2",
+    "tables": "nomi_sample",
+    "ndc11": "99999000101",
+    "profile": { "persona": "under_2", "conditions": [], "medication_types": [] },
+    "expected": { "score": 100, "tier": "red" }
+  },
+  {
+    "note": "Nomi sample: a persona with no rows scores the base",
+    "tables": "nomi_sample",
+    "ndc11": "99999000101",
+    "profile": { "persona": "adult_65_plus", "conditions": [], "medication_types": [] },
+    "expected": { "score": 100, "tier": "green" }
+  }
+]

@@ -100,6 +100,7 @@ uv run tools/mock_ws.py                               # mock recognition + Bot A
 cd web && pnpm install
 VITE_SERVER_URL=http://localhost:8001 pnpm dev        # the PWA on :5173
 pnpm exec vitest run                                  # front-end tests
+cd .. && uv sync && uv run pytest                     # server, Bot API, privacy test, product resolver, scorer twin
 ```
 
 On an iPhone, run `tailscale serve --bg 5173` on the dev machine and open `https://<machine>.<tailnet>.ts.net`. Add `?frame=iphone` on a laptop to see the app inside an iPhone frame, driven by the webcam.
